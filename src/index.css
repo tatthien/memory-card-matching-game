@@ -1,0 +1,7 @@
+#root {
+  height: 100%;
+}
+
+.flip {
+  transform: rotateY(180deg);
+}

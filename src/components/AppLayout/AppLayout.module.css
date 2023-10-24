@@ -1,0 +1,10 @@
+.layout {
+  display: flex;
+  flex-flow: column;
+  height: 100%;
+}
+
+.main {
+  flex: 1;
+  background-color: var(--mantine-color-gray-0);
+}
