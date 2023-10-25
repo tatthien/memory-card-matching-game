@@ -1,7 +1,7 @@
 .grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
-  grid-template-rows: repeat(auto-fit, minmax(150px, 1fr));
+  grid-template-rows: repeat(auto-fit, minmax(100px, 1fr));
   gap: 1.25rem;
   height: calc(100vh - 8.25rem);
   padding: 2rem;
@@ -17,9 +17,10 @@
   align-items: center;
   justify-content: center;
   border-radius: 1rem;
-  box-shadow: 0 0 0 3px rgb(85 233 177);
   transform-style: preserve-3d;
   transition: all 0.5s ease-in-out;
+  border: 1px solid var(--mantine-color-gray-3);
+  box-shadow: 0 0 16px rgba(0, 0, 0, 0.1);
 
   img {
     width: 70px;
@@ -41,12 +42,17 @@
 }
 
 .front {
-  background: #fff;
+  background: #ff6b64;
   cursor: pointer;
+
+  span {
+    font-size: 4rem;
+    color: #fff;
+  }
 }
 
 .back {
-  background: #d2ffee;
+  background: #fff;
   transform: rotateY(180deg);
 }
 

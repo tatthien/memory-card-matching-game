@@ -1,3 +1,4 @@
+import { MAX_CARDS } from "@/config";
 import { FocusTrap, NumberInput, Group, Button } from "@mantine/core";
 import { useState, KeyboardEvent } from "react";
 
@@ -15,8 +16,9 @@ export function FormCreateNewGame({ onSubmit }: FormCreateNewGameProps) {
       <FocusTrap active={true}>
         <NumberInput
           hideControls
-          label="Total cards"
+          label={`Total cards (Max. ${MAX_CARDS * 2})`}
           placeholder="0"
+          radius="md"
           data-autofocus
           value={numberInputValue}
           onChange={(value) => setNumberInputValue(Number(value))}

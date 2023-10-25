@@ -1,11 +1,10 @@
 import { AppLayout, FormCreateNewGame } from "@/components";
 import { Box, Button, Group, Image, Text } from "@mantine/core";
 import classes from "./app.module.css";
-import { useState, MouseEvent, useEffect, useMemo } from "react";
+import { useState, useEffect } from "react";
 import { modals } from "@mantine/modals";
-
-const icons = ["chest", "flower", "mushroom", "star", "ten", "twenty"];
-const maxCards = icons.length;
+import confetti from "canvas-confetti";
+import { ICONS } from "./config";
 
 type Card = {
   id: number;
@@ -22,8 +21,8 @@ const shuffleArray = (arr: string[]) => {
   return arr;
 };
 
-const buildGame = (cards: number) => {
-  const choosenIcons = icons.slice(0, cards);
+const createBoard = (cards: number) => {
+  const choosenIcons = shuffleArray(ICONS).slice(0, cards);
 
   // Initialize board by double the icons
   const board = [...choosenIcons, ...choosenIcons];
@@ -33,41 +32,35 @@ const buildGame = (cards: number) => {
 };
 
 function App() {
-  console.log(">>> re-render");
-
+  const [board, setBoard] = useState<string[]>([]);
   const [totalCards, setTotalCards] = useState(0);
   const [match, setMatch] = useState(0);
-  const [done, setDone] = useState(false);
   const [selectedCards, setSelectedCards] = useState<Card[]>([]);
   const [flippedCards, setFlippedCards] = useState<Card[]>([]);
-
-  const board = useMemo(() => {
-    if (totalCards === 0 || totalCards / 2 > maxCards) return [];
-    return buildGame(totalCards / 2);
-  }, [totalCards]);
 
   useEffect(() => {
     if (selectedCards.length === 2) {
       const icons = [selectedCards[0].icon, selectedCards[1].icon];
       const ids = [selectedCards[0].id, selectedCards[1].id];
 
-      // match
       if (icons[0] === icons[1]) {
+        // match
         setMatch(match + 1);
+        setSelectedCards([]);
+        showConfetti();
       } else {
         // reset
         setTimeout(() => {
           setFlippedCards((items) => items.filter((e) => !ids.includes(e.id)));
+          setSelectedCards([]);
         }, 1000);
       }
-
-      setSelectedCards([]);
     }
   }, [selectedCards, match]);
 
   useEffect(() => {
-    if (match > 0 && match === totalCards / 2) {
-      setDone(true);
+    if (match > 0 && match === totalCards) {
+      showConfetti();
     }
   }, [match, totalCards]);
 
@@ -75,17 +68,35 @@ function App() {
     if (selectedCards.find((e) => e.id === card.id)) return;
     if (flippedCards.find((e) => e.id === card.id)) return;
 
-    setFlippedCards((items) => [...items, card]);
-
     if (selectedCards.length < 2) {
+      setFlippedCards((items) => [...items, card]); // Make sure opening 2 cards at a time
       setSelectedCards((items) => [...items, card]);
     }
   };
 
-  const handlResetGame = () => {
+  const newGame = (total: number) => {
+    setTotalCards(total / 2);
+    setBoard(createBoard(total / 2));
+  };
+
+  const resetGame = () => {
     setMatch(0);
-    setDone(false);
     setFlippedCards([]);
+  };
+
+  const showConfetti = () => {
+    confetti({
+      particleCount: 100,
+      angle: 60,
+      spread: 55,
+      origin: { x: 0 },
+    });
+    confetti({
+      particleCount: 100,
+      angle: 120,
+      spread: 55,
+      origin: { x: 1 },
+    });
   };
 
   return (
@@ -103,7 +114,8 @@ function App() {
                     children: (
                       <FormCreateNewGame
                         onSubmit={(values) => {
-                          setTotalCards(values.total);
+                          resetGame();
+                          newGame(values.total);
                           modals.closeAll();
                         }}
                       />
@@ -113,17 +125,8 @@ function App() {
               >
                 New game
               </Button>
-              <Button
-                variant="default"
-                radius="md"
-                color="dark"
-                disabled={!done}
-                onClick={handlResetGame}
-              >
-                Reset
-              </Button>
             </Group>
-            <Text fw={600} fz={24}>{`${match} / ${totalCards / 2}`}</Text>
+            <Text fw={600} fz={24}>{`${match} / ${totalCards}`}</Text>
           </Group>
         </Box>
         <Box className={classes.grid}>
@@ -138,7 +141,7 @@ function App() {
               onClick={() => handleFlipCard({ id: index, icon })}
             >
               <Box className={classes.front}>
-                <Image src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/1116884/spade.svg" />
+                <Text component="span">{index + 1}</Text>
               </Box>
               <Box className={classes.back}>
                 <Image src={`/assets/${icon}.svg`} />
