@@ -1,4 +1,4 @@
-# Flip Cards Game
+# Memory Card Matching Game
 
 ## Screenshots
 
