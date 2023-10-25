@@ -8,7 +8,7 @@ import {
   Select,
   Alert,
 } from "@mantine/core";
-import { useState, KeyboardEvent, useMemo, useEffect } from "react";
+import { useState, KeyboardEvent, useMemo } from "react";
 import { IconAlertTriangle } from "@tabler/icons-react";
 
 type FormCreateNewGameProps = {
