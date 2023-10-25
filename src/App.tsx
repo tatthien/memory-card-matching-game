@@ -1,10 +1,11 @@
 import { AppLayout, FormCreateNewGame } from "@/components";
-import { Box, Button, Group, Image, Text } from "@mantine/core";
+import { Box, Button, Group, Image, Menu, Text } from "@mantine/core";
 import classes from "./app.module.css";
 import { useState, useEffect } from "react";
 import { modals } from "@mantine/modals";
 import confetti from "canvas-confetti";
 import { ICONS } from "./config";
+import { clsx } from "clsx";
 
 type Card = {
   id: number;
@@ -31,6 +32,29 @@ const createBoard = (cards: number) => {
   return shuffleArray(board);
 };
 
+const instantGames = [
+  {
+    cols: 3,
+    rows: 4,
+  },
+  {
+    cols: 4,
+    rows: 4,
+  },
+  {
+    cols: 5,
+    rows: 4,
+  },
+  {
+    cols: 6,
+    rows: 5,
+  },
+  {
+    cols: 6,
+    rows: 6,
+  },
+];
+
 function App() {
   const [board, setBoard] = useState<string[]>([]);
   const [totalCards, setTotalCards] = useState(0);
@@ -55,7 +79,7 @@ function App() {
         setTimeout(() => {
           setFlippedCards((items) => items.filter((e) => !ids.includes(e.id)));
           setSelectedCards([]);
-        }, 1000);
+        }, 800);
       }
     }
   }, [selectedCards, match]);
@@ -76,8 +100,20 @@ function App() {
     }
   };
 
-  const newGame = (total: number) => {
+  const newGame = ({
+    total,
+    rows,
+    cols,
+  }: {
+    total: number;
+    rows: string | number;
+    cols: string | number;
+  }) => {
+    resetGame();
+
     setTotalCards(total / 2);
+    setRows(rows);
+    setCols(cols);
     setBoard(createBoard(total / 2));
   };
 
@@ -107,28 +143,41 @@ function App() {
         <Box px={32} py={16}>
           <Group justify="space-between">
             <Group>
-              <Button
-                radius="md"
-                color="dark"
-                onClick={() =>
-                  modals.open({
-                    title: "New game",
-                    children: (
-                      <FormCreateNewGame
-                        onSubmit={(values) => {
-                          resetGame();
-                          newGame(values.total);
-                          setRows(values.rows);
-                          setCols(values.cols);
-                          modals.closeAll();
-                        }}
-                      />
-                    ),
-                  })
-                }
-              >
-                New game
-              </Button>
+              <Menu shadow="md" width={200} position="bottom-start">
+                <Menu.Target>
+                  <Button radius="md">New game</Button>
+                </Menu.Target>
+
+                <Menu.Dropdown>
+                  <Menu.Item
+                    onClick={() =>
+                      modals.open({
+                        title: "New game",
+                        children: (
+                          <FormCreateNewGame
+                            onSubmit={(values) => {
+                              newGame(values);
+                              modals.closeAll();
+                            }}
+                          />
+                        ),
+                      })
+                    }
+                  >
+                    Full control
+                  </Menu.Item>
+                  <Menu.Label>Instant game</Menu.Label>
+                  {instantGames.map(({ cols, rows }) => (
+                    <Menu.Item
+                      onClick={() =>
+                        newGame({ total: cols * rows, cols, rows })
+                      }
+                    >
+                      {`${cols * rows} cards - ${rows}x${cols}`}
+                    </Menu.Item>
+                  ))}
+                </Menu.Dropdown>
+              </Menu>
             </Group>
             <Text fw={600} fz={24}>{`${match} / ${totalCards}`}</Text>
           </Group>
@@ -140,10 +189,10 @@ function App() {
           {board.map((icon: string, index: number) => (
             <Box
               key={index}
-              className={`${classes.card} ${
-                // @TODO: using `cx`
-                flippedCards.find((e) => e.id === index) ? classes.flip : ""
-              }`}
+              className={clsx(
+                classes.card,
+                flippedCards.find((e) => e.id === index) && classes.flip,
+              )}
               data-icon={icon}
               onClick={() => handleFlipCard({ id: index, icon })}
             >
