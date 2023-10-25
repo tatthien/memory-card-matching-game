@@ -1,12 +1,14 @@
 .grid {
+  --board-cols: auto-fit;
+  --board-rows: auto-fit;
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
-  grid-template-rows: repeat(auto-fit, minmax(100px, 1fr));
-  gap: 1.25rem;
+  grid-template-columns: repeat(var(--board-cols), minmax(100px, 1fr));
+  grid-template-rows: repeat(var(--board-rows), minmax(100px, 1fr));
+  gap: 1rem;
   height: calc(100vh - 8.25rem);
   padding: 2rem;
   margin: 2rem;
-  perspective: 120rem;
+  perspective: 200rem;
   border: 2px dashed var(--mantine-color-gray-4);
   border-radius: 3rem;
 }
@@ -18,7 +20,7 @@
   justify-content: center;
   border-radius: 1rem;
   transform-style: preserve-3d;
-  transition: all 0.5s ease-in-out;
+  transition: all 0.4s ease-in-out;
   border: 1px solid var(--mantine-color-gray-3);
   box-shadow: 0 0 16px rgba(0, 0, 0, 0.1);
 

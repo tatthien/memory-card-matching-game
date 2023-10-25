@@ -37,6 +37,8 @@ function App() {
   const [match, setMatch] = useState(0);
   const [selectedCards, setSelectedCards] = useState<Card[]>([]);
   const [flippedCards, setFlippedCards] = useState<Card[]>([]);
+  const [rows, setRows] = useState<string | number>("auto-fit");
+  const [cols, setCols] = useState<string | number>("auto-fit");
 
   useEffect(() => {
     if (selectedCards.length === 2) {
@@ -116,6 +118,8 @@ function App() {
                         onSubmit={(values) => {
                           resetGame();
                           newGame(values.total);
+                          setRows(values.rows);
+                          setCols(values.cols);
                           modals.closeAll();
                         }}
                       />
@@ -129,7 +133,10 @@ function App() {
             <Text fw={600} fz={24}>{`${match} / ${totalCards}`}</Text>
           </Group>
         </Box>
-        <Box className={classes.grid}>
+        <Box
+          style={{ "--board-cols": cols, "--board-rows": rows }}
+          className={classes.grid}
+        >
           {board.map((icon: string, index: number) => (
             <Box
               key={index}

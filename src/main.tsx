@@ -12,7 +12,9 @@ import theme from "./theme.ts";
 ReactDOM.createRoot(document.getElementById("root")!).render(
   <React.StrictMode>
     <MantineProvider theme={theme} withCssVariables>
-      <ModalsProvider>
+      <ModalsProvider
+        modalProps={{ centered: true, overlayProps: { blur: 5 } }}
+      >
         <Toaster />
         <App />
       </ModalsProvider>
