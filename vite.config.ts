@@ -6,9 +6,14 @@ import path from "path";
 export default defineConfig({
   plugins: [react()],
   server: {
-    port: process.env.PORT,
+    port: Number(process.env.PORT),
   },
   resolve: {
     alias: [{ find: "@", replacement: path.resolve(__dirname, "src") }],
+  },
+  build: {
+    rollupOptions: {
+      external: ["canvas-confetti"],
+    },
   },
 });
