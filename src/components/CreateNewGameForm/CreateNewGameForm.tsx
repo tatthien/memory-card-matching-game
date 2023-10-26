@@ -4,25 +4,25 @@ import {
   NumberInput,
   Group,
   Button,
-  SimpleGrid,
   Select,
   Alert,
 } from "@mantine/core";
 import { useState, KeyboardEvent, useMemo } from "react";
 import { IconAlertTriangle } from "@tabler/icons-react";
 
-type FormCreateNewGameProps = {
+type CreateNewGameFormProps = {
   onSubmit: (values: {
     total: number;
-    rows: string | number;
-    cols: string | number;
+    rows: "auto-fit" | number;
+    cols: "auto-fit" | number;
   }) => void;
 };
 
-export function FormCreateNewGame({ onSubmit }: FormCreateNewGameProps) {
+export function CreateNewGameForm({ onSubmit }: CreateNewGameFormProps) {
   const [numberInputValue, setNumberInputValue] = useState(0);
-  const [rowInputValue, setRowInputValue] = useState("auto-fit");
-  const [colInputValue, setColInputValue] = useState("auto-fit");
+  const [colInputValue, setColInputValue] = useState<"auto-fit" | number>(
+    "auto-fit",
+  );
   const [error, setError] = useState("");
 
   const hasError = useMemo(() => {
@@ -42,7 +42,7 @@ export function FormCreateNewGame({ onSubmit }: FormCreateNewGameProps) {
 
     onSubmit({
       total: numberInputValue,
-      rows: rowInputValue,
+      rows: "auto-fit",
       cols: colInputValue,
     });
   };
@@ -76,44 +76,24 @@ export function FormCreateNewGame({ onSubmit }: FormCreateNewGameProps) {
           }}
         />
       </FocusTrap>
-      <SimpleGrid cols={2}>
-        <Select
-          label="Cols"
-          data={[
-            { value: "auto-fit", label: "auto" },
-            { value: "1", label: "1" },
-            { value: "2", label: "2" },
-            { value: "3", label: "3" },
-            { value: "4", label: "4" },
-            { value: "5", label: "5" },
-            { value: "6", label: "6" },
-            { value: "7", label: "7" },
-            { value: "8", label: "8" },
-            { value: "9", label: "9" },
-            { value: "10", label: "10" },
-          ]}
-          value={colInputValue}
-          onChange={(value) => setColInputValue(value || "auto-fit")}
-        />
-        <Select
-          label="Rows"
-          data={[
-            { value: "auto-fit", label: "auto" },
-            { value: "1", label: "1" },
-            { value: "2", label: "2" },
-            { value: "3", label: "3" },
-            { value: "4", label: "4" },
-            { value: "5", label: "5" },
-            { value: "6", label: "6" },
-            { value: "7", label: "7" },
-            { value: "8", label: "8" },
-            { value: "9", label: "9" },
-            { value: "10", label: "10" },
-          ]}
-          value={rowInputValue}
-          onChange={(value) => setRowInputValue(value || "auto-fit")}
-        />
-      </SimpleGrid>
+      <Select
+        label="Cols"
+        data={[
+          { value: "auto-fit", label: "auto" },
+          { value: "1", label: "1" },
+          { value: "2", label: "2" },
+          { value: "3", label: "3" },
+          { value: "4", label: "4" },
+          { value: "5", label: "5" },
+          { value: "6", label: "6" },
+          { value: "7", label: "7" },
+          { value: "8", label: "8" },
+          { value: "9", label: "9" },
+          { value: "10", label: "10" },
+        ]}
+        value={colInputValue as string}
+        onChange={(value) => setColInputValue(Number(value) || "auto-fit")}
+      />
       <Group justify="flex-end" mt="md">
         <Button radius="md" color="dark" onClick={handleSubmit}>
           Create

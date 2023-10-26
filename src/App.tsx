@@ -1,4 +1,4 @@
-import { AppLayout, FormCreateNewGame } from "@/components";
+import { AppLayout, CreateNewGameForm } from "@/components";
 import { Box, Button, Group, Image, Menu, Text } from "@mantine/core";
 import classes from "./app.module.css";
 import { useState, useEffect } from "react";
@@ -47,6 +47,10 @@ const instantGames = [
   },
   {
     cols: 6,
+    rows: 4,
+  },
+  {
+    cols: 6,
     rows: 5,
   },
   {
@@ -56,13 +60,18 @@ const instantGames = [
 ];
 
 function App() {
-  const [board, setBoard] = useState<string[]>([]);
+  const [board, setBoard] = useState<string[]>(createBoard(8));
   const [totalCards, setTotalCards] = useState(0);
   const [match, setMatch] = useState(0);
   const [selectedCards, setSelectedCards] = useState<Card[]>([]);
   const [flippedCards, setFlippedCards] = useState<Card[]>([]);
-  const [rows, setRows] = useState<string | number>("auto-fit");
-  const [cols, setCols] = useState<string | number>("auto-fit");
+  const [rows, setRows] = useState<string | number>(4);
+  const [cols, setCols] = useState<string | number>(4);
+
+  // init game
+  useEffect(() => {
+    newGame({ total: 16, rows: 4, cols: 4 });
+  }, []);
 
   useEffect(() => {
     if (selectedCards.length === 2) {
@@ -140,7 +149,7 @@ function App() {
   return (
     <AppLayout>
       <>
-        <Box px={32} py={16}>
+        <Box py={16} mb={16} className={classes.container}>
           <Group justify="space-between">
             <Group>
               <Menu shadow="md" width={200} position="bottom-start">
@@ -154,7 +163,7 @@ function App() {
                       modals.open({
                         title: "New game",
                         children: (
-                          <FormCreateNewGame
+                          <CreateNewGameForm
                             onSubmit={(values) => {
                               newGame(values);
                               modals.closeAll();
@@ -164,11 +173,12 @@ function App() {
                       })
                     }
                   >
-                    Full control
+                    New game
                   </Menu.Item>
                   <Menu.Label>Instant game</Menu.Label>
                   {instantGames.map(({ cols, rows }) => (
                     <Menu.Item
+                      key={`${cols}-${rows}`}
                       onClick={() =>
                         newGame({ total: cols * rows, cols, rows })
                       }
@@ -182,28 +192,30 @@ function App() {
             <Text fw={600} fz={24}>{`${match} / ${totalCards}`}</Text>
           </Group>
         </Box>
-        <Box
-          style={{ "--board-cols": cols, "--board-rows": rows }}
-          className={classes.grid}
-        >
-          {board.map((icon: string, index: number) => (
-            <Box
-              key={index}
-              className={clsx(
-                classes.card,
-                flippedCards.find((e) => e.id === index) && classes.flip,
-              )}
-              data-icon={icon}
-              onClick={() => handleFlipCard({ id: index, icon })}
-            >
-              <Box className={classes.front}>
-                <Text component="span">{index + 1}</Text>
+        <Box className={classes.container} mb={16}>
+          <Box
+            style={{ "--board-cols": cols, "--board-rows": rows }}
+            className={classes.grid}
+          >
+            {board.map((icon: string, index: number) => (
+              <Box
+                key={index}
+                className={clsx(
+                  classes.card,
+                  flippedCards.find((e) => e.id === index) && classes.flip,
+                )}
+                data-icon={icon}
+                onClick={() => handleFlipCard({ id: index, icon })}
+              >
+                <Box className={classes.front}>
+                  <Text component="span">{index + 1}</Text>
+                </Box>
+                <Box className={classes.back}>
+                  <Image src={`/assets/${icon}.svg`} />
+                </Box>
               </Box>
-              <Box className={classes.back}>
-                <Image src={`/assets/${icon}.svg`} />
-              </Box>
-            </Box>
-          ))}
+            ))}
+          </Box>
         </Box>
       </>
     </AppLayout>

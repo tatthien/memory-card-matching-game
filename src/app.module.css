@@ -1,16 +1,25 @@
+.container {
+  max-width: 40rem;
+  margin: 0 auto;
+  padding-left: 0.5rem;
+  padding-right: 0.5rem;
+}
+
 .grid {
   --board-cols: auto-fit;
   --board-rows: auto-fit;
+  --card-border-radius: 1rem;
+  --grid-gap: 0.25rem;
+  --grid-padding: 0.5rem;
+
   display: grid;
-  grid-template-columns: repeat(var(--board-cols), minmax(100px, 1fr));
-  grid-template-rows: repeat(var(--board-rows), minmax(100px, 1fr));
-  gap: 0.75rem;
-  height: calc(100vh - 8.25rem);
-  padding: 2rem;
-  margin: 2rem;
+  grid-template-columns: repeat(var(--board-cols), 1fr);
+  grid-template-rows: repeat(var(--board-rows), 1fr);
+  gap: var(--grid-gap);
+  padding: var(--grid-padding);
   perspective: 200rem;
   border: 2px dashed var(--mantine-color-gray-4);
-  border-radius: 3rem;
+  border-radius: calc(var(--card-border-radius) + var(--grid-padding));
 }
 
 .card {
@@ -18,11 +27,12 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  border-radius: 1rem;
+  border-radius: var(--card-border-radius);
   transform-style: preserve-3d;
   transition: all 0.4s ease-in-out;
   border: 1px solid var(--mantine-color-gray-3);
   box-shadow: 0 0 16px rgba(0, 0, 0, 0.1);
+  aspect-ratio: 1/1;
 
   img {
     height: 50%;
@@ -49,7 +59,7 @@
   cursor: pointer;
 
   span {
-    font-size: 4rem;
+    font-size: 2rem;
     color: #fff;
   }
 }
