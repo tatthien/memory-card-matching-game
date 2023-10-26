@@ -3,7 +3,6 @@ import { Box, Button, Group, Image, Menu, Text } from "@mantine/core";
 import classes from "./app.module.css";
 import { useState, useEffect } from "react";
 import { modals } from "@mantine/modals";
-import confetti from "canvas-confetti";
 import { ICONS } from "./config";
 import { clsx } from "clsx";
 
@@ -82,7 +81,6 @@ function App() {
         // match
         setMatch(match + 1);
         setSelectedCards([]);
-        showConfetti();
       } else {
         // reset
         setTimeout(() => {
@@ -95,7 +93,7 @@ function App() {
 
   useEffect(() => {
     if (match > 0 && match === totalCards) {
-      showConfetti();
+      // @TODO: show matching effect
     }
   }, [match, totalCards]);
 
@@ -129,21 +127,6 @@ function App() {
   const resetGame = () => {
     setMatch(0);
     setFlippedCards([]);
-  };
-
-  const showConfetti = () => {
-    confetti({
-      particleCount: 100,
-      angle: 60,
-      spread: 55,
-      origin: { x: 0 },
-    });
-    confetti({
-      particleCount: 100,
-      angle: 120,
-      spread: 55,
-      origin: { x: 1 },
-    });
   };
 
   return (
