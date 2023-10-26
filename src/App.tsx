@@ -61,6 +61,7 @@ const instantGames = [
 function App() {
   const [board, setBoard] = useState<string[]>(createBoard(8));
   const [totalCards, setTotalCards] = useState(0);
+  const [totalMoves, setTotalMoves] = useState(0);
   const [match, setMatch] = useState(0);
   const [selectedCards, setSelectedCards] = useState<Card[]>([]);
   const [flippedCards, setFlippedCards] = useState<Card[]>([]);
@@ -98,6 +99,9 @@ function App() {
   }, [match, totalCards]);
 
   const handleFlipCard = (card: Card) => {
+    // Increase total moves
+    setTotalMoves(totalMoves + 1);
+
     if (selectedCards.find((e) => e.id === card.id)) return;
     if (flippedCards.find((e) => e.id === card.id)) return;
 
@@ -172,7 +176,11 @@ function App() {
                 </Menu.Dropdown>
               </Menu>
             </Group>
-            <Text fw={600} fz={24}>{`${match} / ${totalCards}`}</Text>
+            <Group>
+              <Text fw={600} fz={18}>
+                Moves: {totalMoves}
+              </Text>
+            </Group>
           </Group>
         </Box>
         <Box className={classes.container} mb={16}>
