@@ -11,4 +11,9 @@ export default defineConfig({
   resolve: {
     alias: [{ find: "@", replacement: path.resolve(__dirname, "src") }],
   },
+  build: {
+    rollupOptions: {
+      external: ["node:canvas-confetti"],
+    },
+  },
 });
