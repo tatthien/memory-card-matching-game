@@ -33,6 +33,10 @@ const createBoard = (cards: number) => {
 
 const instantGames = [
   {
+    cols: 2,
+    rows: 2,
+  },
+  {
     cols: 3,
     rows: 4,
   },
@@ -82,6 +86,14 @@ function App() {
         // Match
         setMatch(match + 1);
         setSelectedCards([]);
+
+        // Matching effect
+        setTimeout(() => {
+          const card1 = document.getElementById(`card-${ids[0]}`);
+          const card2 = document.getElementById(`card-${ids[1]}`);
+          card1?.classList.add("pop");
+          card2?.classList.add("pop");
+        }, 400);
       } else {
         // Reset
         setTimeout(() => {
@@ -191,6 +203,7 @@ function App() {
           >
             {board.map((icon: string, index: number) => (
               <Box
+                id={`card-${index}`}
                 key={index}
                 className={clsx(
                   classes.card,
