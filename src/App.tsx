@@ -68,7 +68,7 @@ function App() {
   const [rows, setRows] = useState<string | number>(4);
   const [cols, setCols] = useState<string | number>(4);
 
-  // init game
+  // Init game
   useEffect(() => {
     newGame({ total: 16, rows: 4, cols: 4 });
   }, []);
@@ -79,11 +79,11 @@ function App() {
       const ids = [selectedCards[0].id, selectedCards[1].id];
 
       if (icons[0] === icons[1]) {
-        // match
+        // Match
         setMatch(match + 1);
         setSelectedCards([]);
       } else {
-        // reset
+        // Reset
         setTimeout(() => {
           setFlippedCards((items) => items.filter((e) => !ids.includes(e.id)));
           setSelectedCards([]);
@@ -106,7 +106,8 @@ function App() {
     if (flippedCards.find((e) => e.id === card.id)) return;
 
     if (selectedCards.length < 2) {
-      setFlippedCards((items) => [...items, card]); // Make sure opening 2 cards at a time
+      // Make sure opening only 2 cards at a time
+      setFlippedCards((items) => [...items, card]);
       setSelectedCards((items) => [...items, card]);
     }
   };
