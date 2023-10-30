@@ -20,9 +20,7 @@ type CreateNewGameFormProps = {
 
 export function CreateNewGameForm({ onSubmit }: CreateNewGameFormProps) {
   const [numberInputValue, setNumberInputValue] = useState(0);
-  const [colInputValue, setColInputValue] = useState<"auto-fit" | number>(
-    "auto-fit",
-  );
+  const [colInputValue, setColInputValue] = useState<"auto-fit" | number>(1);
   const [error, setError] = useState("");
 
   const hasError = useMemo(() => {
@@ -79,7 +77,6 @@ export function CreateNewGameForm({ onSubmit }: CreateNewGameFormProps) {
       <Select
         label="Cols"
         data={[
-          { value: "auto-fit", label: "auto" },
           { value: "1", label: "1" },
           { value: "2", label: "2" },
           { value: "3", label: "3" },

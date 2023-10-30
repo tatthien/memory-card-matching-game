@@ -1,7 +1,6 @@
 import { Button, createTheme, Modal, rem } from "@mantine/core";
 
 export default createTheme({
-  fontFamily: "Silkscreen",
   primaryColor: "dark",
   components: {
     Modal: Modal.extend({

@@ -1,5 +1,11 @@
+:root {
+  --container-width: 40rem;
+  --board-gap: 0.25rem;
+  --board-padding: 0.5rem;
+}
+
 .container {
-  max-width: 40rem;
+  max-width: var(--container-width);
   margin: 0 auto;
   padding-left: 0.5rem;
   padding-right: 0.5rem;
@@ -9,17 +15,15 @@
   --board-cols: auto-fit;
   --board-rows: auto-fit;
   --card-border-radius: 1rem;
-  --grid-gap: 0.25rem;
-  --grid-padding: 0.5rem;
 
   display: grid;
   grid-template-columns: repeat(var(--board-cols), 1fr);
   grid-template-rows: repeat(var(--board-rows), 1fr);
-  gap: var(--grid-gap);
-  padding: var(--grid-padding);
+  gap: var(--board-gap);
+  padding: var(--board-padding);
   perspective: 200rem;
   border: 2px dashed var(--mantine-color-gray-4);
-  border-radius: calc(var(--card-border-radius) + var(--grid-padding));
+  border-radius: calc(var(--card-border-radius) + var(--board-padding));
 }
 
 .card {
@@ -60,7 +64,13 @@
   cursor: pointer;
 
   span {
-    font-size: 2rem;
+    font-size: calc(
+      (
+          var(--container-width) / var(--board-cols) -
+            (var(--board-gap) * var(--board-cols)) - (var(--board-padding) * 2)
+        ) * 0.5 + 1.5rem
+    );
+    font-weight: 700;
     color: #fff;
   }
 }
@@ -68,6 +78,15 @@
 .back {
   background: #fff;
   transform: rotateY(180deg);
+
+  span {
+    font-size: calc(
+      (
+          var(--container-width) / var(--board-cols) -
+            (var(--board-gap) * var(--board-cols)) - (var(--board-padding) * 2)
+        ) * 0.625 + 1.5rem
+    );
+  }
 }
 
 .flip {

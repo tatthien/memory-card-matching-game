@@ -1,5 +1,5 @@
 import { AppLayout, CreateNewGameForm } from "@/components";
-import { Box, Button, Group, Image, Menu, Text } from "@mantine/core";
+import { Box, Button, Group, Menu, Text } from "@mantine/core";
 import classes from "./app.module.css";
 import { useState, useEffect } from "react";
 import { modals } from "@mantine/modals";
@@ -216,7 +216,7 @@ function App() {
                   <Text component="span">{index + 1}</Text>
                 </Box>
                 <Box className={classes.back}>
-                  <Image src={`/assets/${icon}.svg`} />
+                  <Text component="span">{icon}</Text>
                 </Box>
               </Box>
             ))}
